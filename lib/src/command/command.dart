@@ -62,9 +62,13 @@ class CommandBase<T> implements Command<T> {
 
   @override
   void complete(Reply reply, RedisCodec codec) {
-    final value = _complete(reply, codec);
+    try {
+      final value = _complete(reply, codec);
 
-    _completer.complete(value);
+      _completer.complete(value);
+    } catch (e, st) {
+      _completer.completeError(e, st);
+    }
   }
 
   @override
